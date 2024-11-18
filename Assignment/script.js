@@ -1,29 +1,26 @@
-// Fetch API data and render the product list
-document.addEventListener("DOMContentLoaded", async () => {
-  const productList = document.getElementById("product-list");
-  const apiUrl = "https://fakestoreapi.com/products";
+// Fetch product details from the FakeStore API and display on the page
+const productsContainer = document.getElementById("products");
 
-  try {
-    const response = await fetch(apiUrl);
-    const products = await response.json();
-
-    // Render products
-    products.forEach((product) => {
+fetch("https://fakestoreapi.com/products")
+  .then((response) => response.json())
+  .then((data) => {
+    data.forEach((product) => {
       const productCard = document.createElement("div");
-      productCard.className = "product-card";
-
+      productCard.classList.add("product-card");
       productCard.innerHTML = `
-          <img src="${product.image}" alt="${product.title}" class="product-image">
-          <h3 class="product-title">${product.title}</h3>
-          <p class="product-price">$${product.price}</p>
-          <p class="product-rating">Rating: ⭐${product.rating.rate}</p>
-        `;
-
-      productList.appendChild(productCard);
+                <img src="${product.image}" alt="${product.title}">
+                <h3>${product.title}</h3>
+                <p>$${product.price}</p>
+                <button>Add to Cart</button>
+            `;
+      productsContainer.appendChild(productCard);
     });
-  } catch (error) {
-    console.error("Failed to fetch products:", error);
-    productList.innerHTML =
-      "<p>Failed to load products. Please try again later.</p>";
-  }
+  })
+  .catch((err) => console.error("Error fetching products:", err));
+const hamburger = document.getElementById("hamburger");
+const menu = document.getElementById("menu");
+
+// Toggle the menu visibility on hamburger click
+hamburger.addEventListener("click", () => {
+  menu.classList.toggle("active");
 });
